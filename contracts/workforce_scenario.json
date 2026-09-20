@@ -1,0 +1,15 @@
+{
+  "service": "health-workforce-plan",
+  "source_context": "http://health.people.com.cn/n1/2026/0914/c14739-40798564.html",
+  "sample": {
+    "target_year": 2030,
+    "definitions": {
+      "physician": "不含执业助理医师"
+    },
+    "national_targets": {
+      "physicians": 5000000,
+      "nurses": 7000000
+    },
+    "scenario_id": "BASE-2030"
+  }
+}
