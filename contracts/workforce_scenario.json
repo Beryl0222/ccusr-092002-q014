@@ -4,12 +4,187 @@
   "sample": {
     "target_year": 2030,
     "definitions": {
-      "physician": "不含执业助理医师"
+      "physician": "不含执业助理医师",
+      "nurse": "注册护士（按执业地统计，不含在校护生）",
+      "productivity": "每名持证人员年均等效服务人次，仅在同一统计口径内比较",
+      "migration_rate": "年内净增占年初存量的比率，流入为正、流出为负，按执业地口径归集"
     },
     "national_targets": {
       "physicians": 5000000,
       "nurses": 7000000
     },
     "scenario_id": "BASE-2030"
+  },
+  "baseline": {
+    "snapshot_id": "BASE-2030",
+    "target_year": 2030,
+    "first_projection_year": 2026,
+    "reference_date": "2026-01-01",
+    "source_max_age_days": 730,
+    "stale_exceptions": {
+      "productivity": 1095
+    },
+    "currencies": {
+      "headcount": {
+        "label": "人",
+        "kind": "count",
+        "dimensions": ["profession", "region", "year"]
+      },
+      "headcount_rate": {
+        "label": "人/年",
+        "kind": "rate",
+        "dimensions": ["profession", "region", "year"]
+      },
+      "fraction": {
+        "label": "比例",
+        "kind": "rate",
+        "dimensions": ["profession", "region", "year"]
+      },
+      "percent": {
+        "label": "百分比",
+        "kind": "rate",
+        "dimensions": ["profession", "region", "year"]
+      },
+      "service_visits": {
+        "label": "等效服务人次/年",
+        "kind": "rate",
+        "dimensions": ["profession", "region", "year"]
+      },
+      "index": {
+        "label": "指数（基准年=1.0）",
+        "kind": "index",
+        "dimensions": ["profession", "region", "year"]
+      }
+    },
+    "fields": {
+      "retirement_rate": {
+        "label": "年退休率",
+        "unit": "fraction",
+        "allowed_regions": "any",
+        "allowed_professions": ["physician", "nurse"],
+        "bounds": [0, 0.2],
+        "default_value": 0.03
+      },
+      "training_completion": {
+        "label": "培训完成率",
+        "unit": "fraction",
+        "allowed_regions": "any",
+        "allowed_professions": ["physician", "nurse"],
+        "bounds": [0.5, 1],
+        "default_value": 0.9
+      },
+      "training_intake": {
+        "label": "年招生/入岗增量（完成前总规模）",
+        "unit": "headcount_rate",
+        "allowed_regions": "any",
+        "allowed_professions": ["physician", "nurse"],
+        "bounds": [0, 2000000],
+        "default_value": null
+      },
+      "migration_rate": {
+        "label": "跨区净流动率",
+        "unit": "fraction",
+        "allowed_regions": "any",
+        "allowed_professions": ["physician", "nurse"],
+        "bounds": [-0.1, 0.1],
+        "default_value": 0
+      },
+      "productivity": {
+        "label": "人均年等效服务能力",
+        "unit": "service_visits",
+        "allowed_regions": "any",
+        "allowed_professions": ["physician", "nurse"],
+        "bounds": [0, 100000],
+        "default_value": null
+      },
+      "productivity_index": {
+        "label": "效率指数（相对基年）",
+        "unit": "index",
+        "allowed_regions": "any",
+        "allowed_professions": ["physician", "nurse"],
+        "bounds": [0.5, 3],
+        "default_value": 1
+      },
+      "base_stock": {
+        "label": "基准存量",
+        "unit": "headcount",
+        "allowed_regions": "any",
+        "allowed_professions": ["physician", "nurse"],
+        "bounds": [0, 10000000],
+        "default_value": null
+      },
+      "demand_visits": {
+        "label": "年需求服务量",
+        "unit": "service_visits",
+        "allowed_regions": "any",
+        "allowed_professions": ["physician", "nurse"],
+        "bounds": [0, 10000000000],
+        "default_value": null
+      }
+    },
+    "regions": [
+      {
+        "code": "NATIONAL",
+        "label": "全国",
+        "type": "national",
+        "children": ["EAST", "CENTRAL", "WEST"]
+      },
+      {
+        "code": "EAST",
+        "label": "东部",
+        "type": "macro_region",
+        "children": ["BJ", "SH"]
+      },
+      {
+        "code": "CENTRAL",
+        "label": "中部",
+        "type": "macro_region",
+        "children": []
+      },
+      {
+        "code": "WEST",
+        "label": "西部",
+        "type": "macro_region",
+        "children": []
+      },
+      {
+        "code": "BJ",
+        "label": "北京",
+        "type": "province",
+        "children": []
+      },
+      {
+        "code": "SH",
+        "label": "上海",
+        "type": "province",
+        "children": []
+      }
+    ],
+    "national_targets": {
+      "physician": {
+        "target": 5000000,
+        "unit": "headcount",
+        "definition_ref": "physician"
+      },
+      "nurse": {
+        "target": 7000000,
+        "unit": "headcount",
+        "definition_ref": "nurse"
+      }
+    },
+    "stocks_2025": {
+      "physician": { "value": 4080000, "unit": "headcount", "source_id": "SRC-NBS-2025", "as_of": "2025-12-31" },
+      "nurse": { "value": 5800000, "unit": "headcount", "source_id": "SRC-NBS-2025", "as_of": "2025-12-31" }
+    },
+    "initial_inputs_2026": {
+      "physician": {
+        "training_intake": { "value": 320000, "unit": "headcount_rate", "source_id": "SRC-EDU-2025", "as_of": "2025-11-30" },
+        "productivity": { "value": 1800, "unit": "service_visits", "source_id": "SRC-NBS-2025", "as_of": "2025-12-31" }
+      },
+      "nurse": {
+        "training_intake": { "value": 520000, "unit": "headcount_rate", "source_id": "SRC-EDU-2025", "as_of": "2025-11-30" },
+        "productivity": { "value": 1200, "unit": "service_visits", "source_id": "SRC-NBS-2025", "as_of": "2025-12-31" }
+      }
+    }
   }
 }

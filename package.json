@@ -6,6 +6,11 @@
   "description": "维护执业医师、注册护士和基层服务能力的区域规划情景与兑现证据。",
   "scripts": {
     "check": "node src/service.js --check",
+    "start": "node src/service.js",
+    "seed": "node scripts/seed.js",
     "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }
