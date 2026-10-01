@@ -11,5 +11,146 @@
       "nurses": 7000000
     },
     "scenario_id": "BASE-2030"
+  },
+  "baseline": {
+    "baseline_id": "NATIONAL-2030-BASELINE",
+    "baseline_year": 2025,
+    "target_year": 2030,
+    "projection_horizon_years": 5,
+    "evaluation_date": "2026-09-14",
+    "definitions": {
+      "physician": "执业医师（不含执业助理医师），以年末在岗注册人数计",
+      "nurse": "注册护士，以年末在岗注册人数计",
+      "primary_care_capacity": "基层机构按标准服务当量折算后的有效服务能力，非人头数",
+      "headcount": "年末在岗人数（人）",
+      "effective_capacity": "有效服务能力 = 在岗人数 × 效率指数",
+      "net_inflow": "净流入 = 跨区调入 - 跨区调出，负值为净流出"
+    },
+    "national_targets": {
+      "physicians": {
+        "value": 5000000,
+        "unit": "persons",
+        "metric": "effective_capacity",
+        "definition_ref": "physician"
+      },
+      "nurses": {
+        "value": 7000000,
+        "unit": "persons",
+        "metric": "effective_capacity",
+        "definition_ref": "nurse"
+      }
+    },
+    "canonical_units": {
+      "headcount": "persons",
+      "rate": "fraction_per_year",
+      "efficiency_index": "index_2025_1",
+      "capacity": "standard_service_units_per_year"
+    },
+    "variables": [
+      {
+        "key": "stock",
+        "name": "基期在岗存量",
+        "unit": "persons",
+        "metric": "headcount",
+        "definition_ref": "headcount",
+        "applies": ["physicians", "nurses"],
+        "description": "2025 年末在岗注册人数，医师不含执业助理医师"
+      },
+      {
+        "key": "retirement_rate",
+        "name": "年退休/减员率",
+        "unit": "fraction_per_year",
+        "metric": "rate",
+        "applies": ["physicians", "nurses"],
+        "description": "含退休及其他自然减员；以占当年初存量的比例计"
+      },
+      {
+        "key": "training_intake",
+        "name": "年均培训入口",
+        "unit": "persons_per_year",
+        "metric": "headcount",
+        "applies": ["physicians", "nurses"],
+        "description": "教育部门年均招生/规培入口规模"
+      },
+      {
+        "key": "completion_rate",
+        "name": "培训完成率",
+        "unit": "fraction",
+        "metric": "rate",
+        "applies": ["physicians", "nurses"],
+        "description": "入口人群最终取得执业资格并上岗的比例（已含培训周期滞后）"
+      },
+      {
+        "key": "net_inflow_rate",
+        "name": "年跨区净流入率",
+        "unit": "fraction_per_year",
+        "metric": "rate",
+        "applies": ["physicians", "nurses"],
+        "description": "净流入占当年初存量比例；全国情景必须为 0，省际调入调出须配对记账"
+      },
+      {
+        "key": "efficiency_index",
+        "name": "服务效率指数",
+        "unit": "index_2025_1",
+        "metric": "efficiency_index",
+        "applies": ["physicians", "nurses"],
+        "description": "以 2025 年为 1 的相对效率；有效服务能力 = 在岗人数 × 效率指数"
+      }
+    ],
+    "region_taxonomy": {
+      "type": "hierarchy",
+      "root": "CN",
+      "national": "CN",
+      "description": "CN 为全国；省级代码为 CN 下级，如 CN-BJ、CN-SH；全国与地方格不得在同一情景中直接相加"
+    },
+    "temporal_policy": {
+      "horizon": [2025, 2030],
+      "annual_resolution": true,
+      "rule": "假设的 applicable_years 必须落在规划区间内，且不得与基期错配"
+    },
+    "citation_policy": {
+      "max_reference_age_years": 3,
+      "evaluation_date": "2026-09-14",
+      "expiry_rule": "来源数据年份早于 (评审年 - 3) 即视为引用过期，须更新或说明后才能进入兼容集"
+    },
+    "confidence_policy": {
+      "require_interval": true,
+      "interval_kind": "95%_credible_or_confidence",
+      "point_source_rule": "仅给点估计而无置信区间的假设进入澄清，不得直接求和"
+    },
+    "governance_policy": {
+      "constituencies": ["hospital", "primary_care", "education", "finance"],
+      "voting": {
+        "disclosure_required": true,
+        "min_participants": 4,
+        "constituency_quorum": ["hospital", "primary_care", "education", "finance"],
+        "approve_threshold": "majority_of_votes_cast",
+        "dissent_rule": "反对票必须附理由，少数方案随版本永久保存"
+      },
+      "release": {
+        "freeze_inputs": true,
+        "record_program_fingerprint": true,
+        "record_approvals": true,
+        "revision_rule": "已发布快照不可变；新数据或新假设须另起修订版，形成修订链"
+      },
+      "privacy": {
+        "individual_records_forbidden": true,
+        "rule": "服务只接受聚合统计假设；出现身份证号、病历号、个人姓名等个人医护档案字段一律拒收"
+      }
+    },
+    "metrics": {
+      "physicians_2030": {
+        "workforce": "physicians",
+        "year": 2030,
+        "kind": "effective_capacity",
+        "target_ref": "national_targets.physicians"
+      },
+      "nurses_2030": {
+        "workforce": "nurses",
+        "year": 2030,
+        "kind": "effective_capacity",
+        "target_ref": "national_targets.nurses"
+      }
+    }
   }
 }
